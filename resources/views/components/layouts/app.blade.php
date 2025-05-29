@@ -7,6 +7,9 @@
     <title>{{ isset($title) ? $title.' - '.config('app.name') : config('app.name') }}</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <script src="{{ url('tinymce/tinymce.min.js') }}" referrerpolicy="origin"></script>
+
 </head>
 <body class="min-h-screen font-sans antialiased bg-base-200">
 
@@ -46,12 +49,14 @@
                     <x-menu-separator />
                 @endif
 
-                <x-menu-item title="Hello" icon="o-sparkles" link="/" />
-                
-                <x-menu-sub title="Settings" icon="o-cog-6-tooth">
+                <x-menu-item title="Dashboard" icon="o-sparkles" link="/dashboard" />
+
+                <x-menu-item title="Sites" icon="o-link" link="/sites" />
+
+                {{-- <x-menu-sub title="Settings" icon="o-cog-6-tooth">
                     <x-menu-item title="Wifi" icon="o-wifi" link="####" />
                     <x-menu-item title="Archives" icon="o-archive-box" link="####" />
-                </x-menu-sub>
+                </x-menu-sub> --}}
             </x-menu>
         </x-slot:sidebar>
 

@@ -22,6 +22,12 @@ class Page extends Model
 
     public function components()
     {
-        return $this->hasMany(Component::class);
+        return $this->hasMany(Component::class)
+            ->orderBy('order', 'asc');
+    }
+
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
     }
 }

@@ -1,0 +1,50 @@
+name: Deploy Laravel via FTP
+
+on:
+  push:
+    branches:
+      - main # Altere para a branch que deseja monitorar
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar o PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2 # Altere para a versão do seu projeto
+          tools: composer:v2
+          coverage: none
+
+      - name: Instalar dependências do Composer
+        run: composer update --no-interaction --prefer-dist --optimize-autoloader
+
+        
+
+      - name: Configurar o Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18 # Altere conforme necessário
+
+      - name: Instalar dependências do Node e compilar assets
+        run: |
+          npm install
+          npm run build
+
+      - name: Enviar arquivos via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: /eliminamais-dev.planosecagordura.com.br/ # Altere para o diretório do servidor
+          exclude: |
+            **/.git*
+            **/.env
+            **/node_modules/**
+            **/vendor/**
+

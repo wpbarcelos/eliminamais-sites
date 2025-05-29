@@ -23,10 +23,13 @@ class DatabaseSeeder extends Seeder
 
         User::factory()->create([
             'name' => 'Test User',
-            'email' => 'test@example.com',
+            'email' => 'admin@admin.com',
         ]);
 
-        Subdomain::factory(2)->create()->each(function ($subdomain) {
+        foreach (['fase1.app.test', 'fase2.app.test'] as $subdomain) {
+
+            Subdomain::factory(1)->create(['domain' => $subdomain])
+                ->each(function ($subdomain) {
             Page::factory(5)->create(['subdomain_id' => $subdomain->id])->each(function ($page) {
                 // Create 1 Imagem
                 $imagem = Imagem::factory()->create();
@@ -61,5 +64,6 @@ class DatabaseSeeder extends Seeder
                 }
             });
         });
+    }
     }
 }
