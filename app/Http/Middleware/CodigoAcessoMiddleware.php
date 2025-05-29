@@ -26,6 +26,10 @@ class CodigoAcessoMiddleware
 
         $subdomain = Subdomain::where('domain', "$subdomain.$mainUrl")->first();
 
+        if ($subdomain && empty($subdomain->codigo)) {
+            return $next($request);
+        }
+
         if (! Session::get('codigo_acesso')) {
 
             Session::put('subdomainId', $subdomainId);
