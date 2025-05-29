@@ -13,6 +13,8 @@ class Page extends Model
         'subdomain_id',
         'title',
         'slug',
+        'image',
+        'image_icon'
     ];
 
     public function subdomain()

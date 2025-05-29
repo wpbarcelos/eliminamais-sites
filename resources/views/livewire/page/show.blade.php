@@ -29,10 +29,14 @@ class extends Component {
 }; ?>
 
 <div>
+
     <div class="max-w-[800px] mx-auto ">
 
-        <h1 class="text-4xl text-white text-center font-semibold py-12">
+        @if($page->image)
+            <img src="{{ Storage::url($page->image) }}" alt="Page Image" class="w-full h-auto" />
+        @endif
 
+        <h1 class="text-4xl text-white text-center font-semibold py-12">
             {{  $page->title }}
         </h1>
 
@@ -45,24 +49,27 @@ class extends Component {
 
         @foreach($this->page->components as $component)
 
-            @php
+            <div class="mt-5 mb-10">
+
+                @php
                   $data = $component->componentable;
-            @endphp
+                @endphp
 
-            @if($data instanceof App\Models\Imagem)
+                @if($data instanceof App\Models\Imagem)
 
-                <x-site.imagem :$data/>
+                    <x-site.imagem :$data/>
 
-            @elseif($data instanceof App\Models\TextoLivre)
+                @elseif($data instanceof App\Models\TextoLivre)
 
-                <x-site.textolivre :$data/>
+                    <x-site.textolivre :$data/>
 
-            @elseif($data instanceof App\Models\Video)
+                @elseif($data instanceof App\Models\Video)
 
-                <x-site.video :$data />
+                    <x-site.video :$data />
 
-            @endif
+                @endif
 
+            </div>
 
         @endforeach
 

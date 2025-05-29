@@ -12,6 +12,24 @@
         <x-input label="URL amigavel" wire:model="slug"/>
 
 
+        <x-file label="Imagem principal" wire:model="file_image" accept="image/png, image/jpeg">
+
+            <img src="{{ $page->image
+                          ? Storage::url($page->image)
+                          : $file_icon}}"
+                class="w-100 h-64 rounded-lg bg-black" />
+        </x-file>
+
+
+        <x-file label="Ícone da imagem" wire:model="file_icon" accept="image/png, image/jpeg">
+
+            <img src="{{ $page->image_icon
+                          ? Storage::url($page->image_icon)
+                          : $file_icon}}"
+                 class="w-32 h-32 rounded-lg bg-black" />
+        </x-file>
+
+
 
         <h3 class="font-bold mt-6 mb-2">Componentes</h3>
         @php
@@ -39,7 +57,16 @@
                 @elseif($component['type'] === 'textolivre')
                     <x-editor label="Conteúdo" wire:model.defer="components.{{ $i }}.data.content" />
                 @elseif($component['type'] === 'imagem')
-                    <x-input label="URL da imagem" wire:model.defer="components.{{ $i }}.data.url" />
+                    {{-- <x-input label="URL da imagem" wire:model.defer="components.{{ $i }}.data.url" /> --}}
+
+                    <x-file wire:model="components.{{ $i }}.data.file" accept="image/png, image/jpeg">
+                        <img src="{{ $components[$i]['data']['url']
+                                ? Storage::url($components[$i]['data']['url'])
+                                : $components[$i]['data']['file'] }}"
+                            class="h-40 rounded-lg bg-black" />
+                    </x-file>
+
+
                     <x-input label="Legenda" wire:model.defer="components.{{ $i }}.data.caption" />
                 @endif
 
