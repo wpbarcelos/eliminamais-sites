@@ -23,7 +23,7 @@ jobs:
       - name: Instalar dependências do Composer
         run: composer update --no-interaction --prefer-dist --optimize-autoloader
 
-        
+
 
       - name: Configurar o Node.js
         uses: actions/setup-node@v4
@@ -41,7 +41,7 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /eliminamais-dev.planosecagordura.com.br/ # Altere para o diretório do servidor
+          server-dir: /sites.planosecagordura.com.br/ # Altere para o diretório do servidor
           exclude: |
             **/.git*
             **/.env
