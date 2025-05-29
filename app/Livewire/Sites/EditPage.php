@@ -20,6 +20,9 @@ class EditPage extends Component
     #[Validate('required|min:2|max:100')]
     public $domain;
 
+    #[Validate("string")]
+    public $codigo;
+
     public function mount(Subdomain $subdomain)
     {
         $this->subdomain = $subdomain;
@@ -27,6 +30,8 @@ class EditPage extends Component
         $this->name = $subdomain->name;
 
         $this->domain = $subdomain->domain;
+
+        $this->codigo = $subdomain->codigo;
     }
 
 
@@ -41,6 +46,7 @@ class EditPage extends Component
         $this->subdomain->update([
             'name' => $this->name,
             'domain' => $this->domain,
+            'codigo' => $this->codigo
         ]);
 
         $this->success('Atualizado com sucesso!');

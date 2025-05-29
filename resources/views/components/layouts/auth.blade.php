@@ -17,25 +17,7 @@
 
 <body class="font-sans antialiased">
 
-    {{-- The navbar with `sticky` and `full-width` --}}
-    <x-nav sticky full-width>
 
-        <x-slot:brand>
-            {{-- Drawer toggle for "main-drawer" --}}
-            <label for="main-drawer" class="lg:hidden mr-3">
-                <x-icon name="o-bars-3" class="cursor-pointer" />
-            </label>
-
-            {{-- Brand --}}
-            <div>{{ env('APP_NAME') }}</div>
-        </x-slot:brand>
-
-        {{-- Right side actions --}}
-        <x-slot:actions>
-            {{-- <x-button label="Registro" icon="o-user-plus" link="{{ route('register') }}" class="btn-ghost btn-sm"
-                responsive /> --}}
-        </x-slot:actions>
-    </x-nav>
 
     {{-- The main content with `full-width` --}}
     <x-main with-nav full-width>

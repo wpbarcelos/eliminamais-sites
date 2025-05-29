@@ -12,6 +12,7 @@ class Subdomain extends Model
     protected $fillable = [
         'name',
         'domain',
+        'codigo'
     ];
 
     public function pages()

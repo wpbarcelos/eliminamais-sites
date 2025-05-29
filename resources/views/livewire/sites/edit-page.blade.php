@@ -10,6 +10,8 @@
 
         <x-input label="URL" wire:model="domain" />
 
+        <x-input label="Cddigo de acesso" wire:model="codigo" />
+
         <div class="mt-4 mb-10">
             <h2 class='text-lg font-semibold text-center my-12'>Paginas:</h2>
 
