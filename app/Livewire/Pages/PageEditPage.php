@@ -61,6 +61,7 @@ class PageEditPage extends Component
             'type' => 'textolivre', // valor padrão, pode ser 'video' ou 'imagem'
             'data' => [
                 'url' => '',
+                'file' => null,
                 'description' => '',
                 'content' => '',
                 'caption' => '',
@@ -206,6 +207,7 @@ class PageEditPage extends Component
                     'order' => $order,
                     'componentable_id' => $componentable->id,
                     'componentable_type' => get_class($componentable),
+                    'file' => null
                 ]);
             }
         }

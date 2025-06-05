@@ -16,7 +16,7 @@
 
             <img src="{{ $page->image
                           ? Storage::url($page->image)
-                          : $file_icon}}"
+                          : $file_image}}"
                 class="w-100 h-64 rounded-lg bg-black" />
         </x-file>
 
@@ -30,8 +30,8 @@
         </x-file>
 
 
-
         <h3 class="font-bold mt-6 mb-2">Componentes</h3>
+
         @php
             $options = [
                 ['id'=> 'video','name'=>'Video'],
@@ -39,8 +39,11 @@
                 ['id'=> 'imagem','name'=>'Imagem'],
             ];
         @endphp
+
         @foreach($components as $i => $component)
-            <div class="p-4 border rounded mb-4
+
+            <div wire:key={{ 'component_item_'.$i }}
+                 class="p-4 border rounded mb-4
                 @if($components[$i]['type'] == 'video')  bg-zinc-900 @endif
                 @if($components[$i]['type'] == 'imagem')  bg-slate-900 @endif
                 @if($components[$i]['type'] == 'video')  bg-blue-900 @endif
@@ -57,26 +60,25 @@
                 @elseif($component['type'] === 'textolivre')
                     <x-editor label="Conteúdo" wire:model.defer="components.{{ $i }}.data.content" />
                 @elseif($component['type'] === 'imagem')
-                    {{-- <x-input label="URL da imagem" wire:model.defer="components.{{ $i }}.data.url" /> --}}
 
-                    <x-file wire:model="components.{{ $i }}.data.file" accept="image/png, image/jpeg">
-                        @php
-                            $imageUrl = $components[$i]['data']['url'] ?? null;
-                            $imageFile = $components[$i]['data']['file'] ?? null;
-                            $imageSrc = $imageUrl ? Storage::url($imageUrl) : $imageFile;
-                        @endphp
-
-                        @if($imageSrc)
-                            <img src="{{ $imageSrc }}" class="h-40 rounded-lg bg-black" />
-                        @else
-                            <div class="h-40 rounded-lg bg-gray-200 flex items-center justify-center">
-                                <span class="text-gray-500">Nenhuma imagem selecionada</span>
-                            </div>
-                        @endif
-                    </x-file>
+                    @php $urlImageComponent = $component['data']['url']; @endphp
 
 
-                    <x-input label="Legenda" wire:model.defer="components.{{ $i }}.data.caption" />
+                    <div class="mt-2">
+                        <div wire:loading class="h-40  min-w-40 object-cover block rounded-lg bg-black/25" >
+                            Carregando imagem...
+                        </div>
+                        <div wire:loading.remove>
+                            <x-file wire:key="file-image-{{ $i }}" wire:model.live="components.{{ $i }}.data.file" accept="image/png, image/jpeg">
+                                <img src="{{ $urlImageComponent
+                                                        ? Storage::url($urlImageComponent)
+                                                        : $components[$i]['data']['file'] }}"
+                                    class="h-40  min-w-40 object-cover block rounded-lg bg-black " />
+                            </x-file>
+                        </div>
+                    </div>
+
+                    {{-- <x-input label="Legenda" wire:model.defer="components.{{ $i }}.data.caption" /> --}}
                 @endif
 
 
