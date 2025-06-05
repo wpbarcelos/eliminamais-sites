@@ -60,10 +60,19 @@
                     {{-- <x-input label="URL da imagem" wire:model.defer="components.{{ $i }}.data.url" /> --}}
 
                     <x-file wire:model="components.{{ $i }}.data.file" accept="image/png, image/jpeg">
-                        <img src="{{ $components[$i]['data']['url']
-                                ? Storage::url($components[$i]['data']['url'])
-                                : $components[$i]['data']['file'] }}"
-                            class="h-40 rounded-lg bg-black" />
+                        @php
+                            $imageUrl = $components[$i]['data']['url'] ?? null;
+                            $imageFile = $components[$i]['data']['file'] ?? null;
+                            $imageSrc = $imageUrl ? Storage::url($imageUrl) : $imageFile;
+                        @endphp
+
+                        @if($imageSrc)
+                            <img src="{{ $imageSrc }}" class="h-40 rounded-lg bg-black" />
+                        @else
+                            <div class="h-40 rounded-lg bg-gray-200 flex items-center justify-center">
+                                <span class="text-gray-500">Nenhuma imagem selecionada</span>
+                            </div>
+                        @endif
                     </x-file>
 
 
