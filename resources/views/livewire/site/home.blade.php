@@ -31,7 +31,7 @@
                         class="w-100 h-32 object-cover mx-auto" />
                     @endif
                     <span class="p-2">
-                    {{ $page['title'] }}
+                    {{ $page->text_bullet }}
                     </span>
                 </a>
 

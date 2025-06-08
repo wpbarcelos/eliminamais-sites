@@ -32,6 +32,8 @@
                  class="w-32 h-32 rounded-lg bg-black" />
         </x-file>
 
+        <x-input label="Texto do bullet" wire:model="text_bullet" required/>
+
 
         <h3 class="font-bold mt-6 mb-2">Componentes</h3>
 

@@ -31,6 +31,9 @@ class PageEditPage extends Component
     #[Validate('nullable|image|max:1024')]
     public $file_icon;
 
+    #[Validate('string|required')]
+    public $text_bullet;
+
 
     public $components;
 
@@ -46,6 +49,7 @@ class PageEditPage extends Component
 
         $this->title = $page->title ?? '';
         $this->slug = $page->slug;
+        $this->text_bullet = $page->text_bullet;
 
         $this->link = 'https://' . $page->subdomain->domain . '/' . $page->slug;
 
@@ -121,6 +125,7 @@ class PageEditPage extends Component
 
         $this->page->title = $this->title ?? '';
         $this->page->slug = $this->slug;
+        $this->page->text_bullet = $this->text_bullet;
         $this->page->save();
 
 
