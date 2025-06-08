@@ -45,4 +45,9 @@ class AcessoPage extends Component
     {
         return view('livewire.acesso-page');
     }
+
+    public function goBack()
+    {
+        return redirect()->to('https://fase2.planosecagordura.com.br');
+    }
 }
