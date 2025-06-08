@@ -33,7 +33,11 @@
                     link="{{ route('pages.edit', $item) }}"
                 >
                 <x-slot:actions>
-                    <x-button icon="o-trash" class="btn-sm" wire:confirm="Excluir a pagina: '{{$item->title}}'?" wire:click="deletePage({{ $item->id }})" spinner />
+                    <x-button icon="o-trash"
+                        class="btn-sm"
+                        wire:confirm="Excluir a pagina: '{{$item->title}}'?"
+                        wire:click="deletePage({{ $item->id }})"
+                         spinner />
                 </x-slot:actions>
                 </x-list-item>
             @endforeach

@@ -81,7 +81,7 @@ class EditPage extends Component
 
     public function deletePage($pageId)
     {
-        Page::findOrFail($pageId)->delete();
+        Page::destroy($pageId);
     }
 
     public function render()
