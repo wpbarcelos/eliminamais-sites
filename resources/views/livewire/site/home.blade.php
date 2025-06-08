@@ -1,3 +1,11 @@
+
+@section('title'){{ $subdomain->name }}@endsection
+
+@section('head')
+{!!  seo()->for($subdomain) !!}
+@endsection
+
+
 <div>
     <div class="max-w-[800px] mx-auto h-screen">
 

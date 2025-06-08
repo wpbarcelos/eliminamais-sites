@@ -5,7 +5,10 @@
 
     <form wire:submit="update">
 
-        <x-button type="submit" class="btn-success">Salvar</x-button>
+        <div class="flex justify-between">
+            <x-button type="submit" class="btn-success">Salvar</x-button>
+            <x-button link="{{  $link }}"  external class="btn-secondary">Abrir Página</x-button>
+        </div>
 
         <x-input label="Titulo da página" wire:model="title"/>
 
@@ -37,6 +40,7 @@
                 ['id'=> 'video','name'=>'Video'],
                 ['id'=> 'textolivre','name'=>'Texto Livre'],
                 ['id'=> 'imagem','name'=>'Imagem'],
+                // ['id'=> 'file','name'=>'Arquivo'],
             ];
         @endphp
 
@@ -44,9 +48,12 @@
 
             <div wire:key={{ 'component_item_'.$i }}
                  class="p-4 border rounded mb-4
-                @if($components[$i]['type'] == 'video')  bg-zinc-900 @endif
-                @if($components[$i]['type'] == 'imagem')  bg-slate-900 @endif
-                @if($components[$i]['type'] == 'video')  bg-blue-900 @endif
+                @if($components[$i]['type'] == 'textolivre')  bg-yellow-100 @endif
+                @if($components[$i]['type'] == 'video')  bg-zinc-200 @endif
+                @if($components[$i]['type'] == 'imagem')  bg-slate-200 @endif
+                @if($components[$i]['type'] == 'video')  bg-blue-200 @endif
+                @if($components[$i]['type'] == 'file') bg-green-200 @endif
+
             ">
                 <x-select
                     label="Tipo"
@@ -61,7 +68,8 @@
                     <x-editor label="Conteúdo" wire:model.defer="components.{{ $i }}.data.content" />
                 @elseif($component['type'] === 'imagem')
 
-                    @php $urlImageComponent = $component['data']['url']; @endphp
+
+                    @php $urlImageComponent = $component['data']['url'] ?: null; @endphp
 
 
                     <div class="mt-2">
@@ -78,7 +86,43 @@
                         </div>
                     </div>
 
-                    {{-- <x-input label="Legenda" wire:model.defer="components.{{ $i }}.data.caption" /> --}}
+                @elseif($component['type'] === 'file')
+                    <x-input label="Nome do arquivo (opcional)" wire:model.defer="components.{{ $i }}.data.name" />
+                    <x-input label="Descrição" wire:model.defer="components.{{ $i }}.data.description" />
+
+                    @php $urlFile = data_get($component, 'data.url'); @endphp
+
+                    <div class="mt-2">
+                        <div wire:loading class="p-4 border rounded bg-gray-100">
+                            Carregando arquivo...
+                        </div>
+                        <div wire:loading.remove>
+                            <x-file wire:key="file-upload-{{ $i }}" wire:model.live="components.{{ $i }}.data.file">
+                                @if( $urlFile )
+                                    <div class="p-4 border rounded bg-gray-50">
+                                        <div class="flex items-center gap-3">
+                                            <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                            </svg>
+                                            {{-- <div class="flex-1">
+                                                <p class="font-medium">{{ $component['data']['name'] ?? $component['data']['original_name'] ?? 'Arquivo' }}</p>
+                                                @if(isset($component['data']['file_size']))
+                                                    <p class="text-sm text-gray-500">{{ number_format($component['data']['file_size'] / 1024, 2) }} KB</p>
+                                                @endif
+                                            </div> --}}
+                                            <a href="{{ Storage::url($urlFile) }}" target="_blank" class="ml-auto text-blue-600 hover:text-blue-800">
+                                                Download
+                                            </a>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="p-8 border-2 border-dashed border-gray-300 rounded text-center">
+                                        <p class="text-gray-500">Selecione um arquivo</p>
+                                    </div>
+                                @endif
+                            </x-file>
+                        </div>
+                    </div>
                 @endif
 
 

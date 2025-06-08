@@ -19,6 +19,7 @@ class extends Component {
       $this->page = $page;
       $this->page->load('components','subdomain');
 
+
     }
 
     public function with(): array
@@ -27,6 +28,12 @@ class extends Component {
         ];
     }
 }; ?>
+
+@section('title'){{ $page->subdomain->name }}@endsection
+
+@section('head')
+{!!  seo()->for($page) !!}
+@endsection
 
 <div>
 

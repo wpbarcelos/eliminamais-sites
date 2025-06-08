@@ -4,10 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+use RalphJSmit\Laravel\SEO\Support\HasSEO;
+use RalphJSmit\Laravel\SEO\Support\SEOData;
 
 class Page extends Model
 {
     use HasFactory;
+    use HasSEO;
 
     protected $fillable = [
         'subdomain_id',
@@ -31,5 +35,18 @@ class Page extends Model
     public function getRouteKeyName(): string
     {
         return 'slug';
+    }
+
+    public function getDynamicSEOData(): SEOData
+    {
+
+        $seoData = new SEOData(
+            title: $this->title,
+            description: $this->description,
+            image: Storage::url($this->image_icon),
+            site_name: $this->subdomain->name,
+            url: $this->subdomain->url . '/' . $this->slug
+        );
+        return $seoData;
     }
 }

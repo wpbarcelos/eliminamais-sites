@@ -6,11 +6,21 @@
 
         <x-button type="submit" icon="o-check" class="btn-success">Salvar</x-button>
 
-        <x-input label="Nome" wire:model="name" />
+        <x-input required label="Nome" wire:model="name" />
 
-        <x-input label="URL" wire:model="domain" />
+        <x-input required label="URL" wire:model="domain" />
 
-        <x-input label="Cddigo de acesso" wire:model="codigo" />
+        <x-input label="Código de acesso" wire:model="codigo" />
+
+        <x-file label="Imagem principal para SEO" wire:model="file_image" accept="image/png, image/jpeg">
+
+            <img src="{{ $subdomain->image
+                          ? Storage::url($subdomain->image)
+                          : $file_image}}"
+                class="w-100 h-64 rounded-lg bg-black" />
+        </x-file>
+
+        <x-textarea label="Descrição do site para SEO" wire:model="description" class="w-full" required/>
 
         <div class="mt-4 mb-10">
             <h2 class='text-lg font-semibold text-center my-12'>Paginas:</h2>

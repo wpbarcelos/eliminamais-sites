@@ -17,5 +17,5 @@ Route::middleware([CheckSubdomainMiddleware::class, CodigoAcessoMiddleware::clas
 
   Route::get('/', HomePage::class);
 
-  Volt::route('/{page}', 'page.show');
+  Volt::route('/{page}', 'page.show')->name('page');
 });

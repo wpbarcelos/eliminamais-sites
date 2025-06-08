@@ -3,6 +3,7 @@
 namespace App\Livewire\Pages;
 
 use App\Models\Page;
+use App\Models\File;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -34,6 +35,8 @@ class PageEditPage extends Component
     public $components;
 
 
+    public $link;
+
 
     public function mount(Page $page)
     {
@@ -41,8 +44,10 @@ class PageEditPage extends Component
 
         $this->page->load('components');
 
-        $this->title = $page->title;
+        $this->title = $page->title ?? '';
         $this->slug = $page->slug;
+
+        $this->link = 'https://' . $page->subdomain->domain . '/' . $page->slug;
 
 
         $this->components = $page->components->map(function ($component) {
@@ -114,12 +119,9 @@ class PageEditPage extends Component
             $this->page->image_icon = $this->file_icon->store('images', 'public');
         }
 
-        $this->page->title = $this->title;
+        $this->page->title = $this->title ?? '';
         $this->page->slug = $this->slug;
         $this->page->save();
-
-
-
 
 
         // IDs dos componentes existentes (para saber quais remover)
@@ -142,15 +144,7 @@ class PageEditPage extends Component
         foreach ($this->components as $order => $compData) {
             $order += 1;
 
-            // if ($compData['type'] === 'imagem') {
-            //     // Se for um novo upload
-            //     if (isset($compData['data']['url']) && $compData['data']['url'] instanceof \Illuminate\Http\UploadedFile) {
-            //         $path = $compData['data']['url']->store('images', 'public');
-            //         $compData['data']['url'] = $path;
-            //     }
-            //     // Remova o campo 'file' para não tentar salvar no banco
-            //     unset($compData['data']['file']);
-            // }
+
 
             if ($compData['type'] === 'imagem') {
                 // Verifica se é um componente existente
@@ -171,6 +165,44 @@ class PageEditPage extends Component
                 } elseif ($component) {
                     // Se não houver novo upload, mantém a url antiga
                     $compData['data']['url'] = $component->componentable->url;
+                }
+
+                // Remove o campo 'file' para não tentar salvar no banco
+                unset($compData['data']['file']);
+            }
+
+            // Lógica para componente do tipo 'file'
+            if ($compData['type'] === 'file') {
+                // Verifica se é um componente existente
+                $component = isset($compData['id'])
+                    ? $this->page->components()->find($compData['id'])
+                    : null;
+
+                // Se houver novo upload
+                if (isset($compData['data']['file']) && $compData['data']['file'] instanceof \Illuminate\Http\UploadedFile) {
+                    // Remove o arquivo antigo, se existir
+                    if ($component && $component->componentable && $component->componentable->url) {
+                        Storage::disk('public')->delete($component->componentable->url);
+                    }
+
+                    // Faz o upload do novo arquivo
+                    $uploadedFile = $compData['data']['file'];
+                    $path = $uploadedFile->store('files', 'public');
+
+                    // Prepara os dados do arquivo
+                    $compData['data']['url'] = $path;
+                    $compData['data']['name'] = $compData['data']['name'] ?: $uploadedFile->getClientOriginalName();
+                    $compData['data']['original_name'] = $uploadedFile->getClientOriginalName();
+                    $compData['data']['mime_type'] = $uploadedFile->getMimeType();
+                    $compData['data']['file_size'] = $uploadedFile->getSize();
+                } elseif ($component) {
+                    // Se não houver novo upload, mantém os dados antigos
+                    $existingFile = $component->componentable;
+                    $compData['data']['url'] = $existingFile->url;
+                    $compData['data']['name'] = $compData['data']['name'] ?: $existingFile->name;
+                    $compData['data']['original_name'] = $existingFile->original_name;
+                    $compData['data']['mime_type'] = $existingFile->mime_type;
+                    $compData['data']['file_size'] = $existingFile->file_size;
                 }
 
                 // Remove o campo 'file' para não tentar salvar no banco
