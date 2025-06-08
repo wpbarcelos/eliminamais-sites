@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ isset($title) ? $title.' - '.config('app.name') : config('app.name') }}</title>
+    <link rel="icon" href="favicon-32x32.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="favicon-16x16.png" sizes="16x16" type="image/png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
