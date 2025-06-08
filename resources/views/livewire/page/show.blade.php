@@ -43,7 +43,7 @@ class extends Component {
             <img src="{{ Storage::url($page->image) }}" alt="Page Image" class="w-full h-auto" />
         @endif
 
-        <h1 class="text-4xl text-white text-center font-semibold py-12">
+        <h1 class="text-4xl dark:text-white text-center font-semibold py-12">
             {{  $page->title }}
         </h1>
 
