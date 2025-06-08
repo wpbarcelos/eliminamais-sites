@@ -48,6 +48,6 @@ class AcessoPage extends Component
 
     public function goBack()
     {
-        return redirect()->to('https://fase2.planosecagordura.com.br');
+        return redirect()->to('https://fase2.planosecagordura.com.br/home.php');
     }
 }
