@@ -42,7 +42,7 @@
                 ['id'=> 'video','name'=>'Video'],
                 ['id'=> 'textolivre','name'=>'Texto Livre'],
                 ['id'=> 'imagem','name'=>'Imagem'],
-                // ['id'=> 'file','name'=>'Arquivo'],
+                ['id'=> 'file','name'=>'Arquivo'],
             ];
         @endphp
 
@@ -89,12 +89,26 @@
                     </div>
 
                 @elseif($component['type'] === 'file')
-                    <x-input label="Nome do arquivo (opcional)" wire:model.defer="components.{{ $i }}.data.name" />
+                    <x-input label="Nome do arquivo (opcional)" wire:model.live="components.{{ $i }}.data.name" />
                     <x-input label="Descrição" wire:model.defer="components.{{ $i }}.data.description" />
 
                     @php $urlFile = data_get($component, 'data.url'); @endphp
-
                     <div class="mt-2">
+                        <div wire:loading>
+                            Carregando arquivo...
+                        </div>
+                        <div wire:loading.remove>
+                            <x-file wire:key="file-{{ $i }}" wire:model.live="components.{{ $i }}.data.file" accept="*/*" />
+                        </div>
+
+                        @if($urlFile)
+                            <a href="{{ Storage::url($urlFile) }}" target="_blank" class="text-blue-500 underline">Visualizar arquivo</a>
+                        @endif
+                    </div>
+                    
+                    
+
+                    {{-- <div class="mt-2">
                         <div wire:loading class="p-4 border rounded bg-gray-100">
                             Carregando arquivo...
                         </div>
@@ -106,12 +120,7 @@
                                             <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                                             </svg>
-                                            {{-- <div class="flex-1">
-                                                <p class="font-medium">{{ $component['data']['name'] ?? $component['data']['original_name'] ?? 'Arquivo' }}</p>
-                                                @if(isset($component['data']['file_size']))
-                                                    <p class="text-sm text-gray-500">{{ number_format($component['data']['file_size'] / 1024, 2) }} KB</p>
-                                                @endif
-                                            </div> --}}
+                                          
                                             <a href="{{ Storage::url($urlFile) }}" target="_blank" class="ml-auto text-blue-600 hover:text-blue-800">
                                                 Download
                                             </a>
@@ -124,7 +133,7 @@
                                 @endif
                             </x-file>
                         </div>
-                    </div>
+                    </div> --}}
                 @endif
 
 

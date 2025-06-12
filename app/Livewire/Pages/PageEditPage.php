@@ -176,14 +176,15 @@ class PageEditPage extends Component
                 unset($compData['data']['file']);
             }
 
+
             // Lógica para componente do tipo 'file'
             if ($compData['type'] === 'file') {
                 // Verifica se é um componente existente
                 $component = isset($compData['id'])
                     ? $this->page->components()->find($compData['id'])
                     : null;
-
-                // Se houver novo upload
+                
+                    // Se houver novo upload
                 if (isset($compData['data']['file']) && $compData['data']['file'] instanceof \Illuminate\Http\UploadedFile) {
                     // Remove o arquivo antigo, se existir
                     if ($component && $component->componentable && $component->componentable->url) {
@@ -235,6 +236,9 @@ class PageEditPage extends Component
                         break;
                     case 'imagem':
                         $componentable = \App\Models\Imagem::create($compData['data']);
+                        break;
+                    case 'file':
+                        $componentable = \App\Models\File::create($compData['data']);
                         break;
                     default:
                         continue 2;

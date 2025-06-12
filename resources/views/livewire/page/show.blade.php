@@ -74,6 +74,10 @@ class extends Component {
 
                     <x-site.video :$data />
 
+                @elseif($data instanceof App\Models\File)
+                    
+                    <x-site.file :$data />
+                    
                 @endif
 
             </div>

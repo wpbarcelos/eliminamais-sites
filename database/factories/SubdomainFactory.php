@@ -14,6 +14,7 @@ class SubdomainFactory extends Factory
         return [
             'name' => $this->faker->company,
             'domain' => $this->faker->unique()->domainName,
+            'description'=> $this->faker->sentence,
         ];
     }
 }
